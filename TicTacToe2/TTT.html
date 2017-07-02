@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tic Tac Toe!</title>
+</head>	
+	
+<body>
+	
+<style>
+
+ canvas {
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+}
+  
+</style>
+
+<canvas id="TicTacToeGame" width="380" height="380"
+	style="border:1px solid #000000;">
+</canvas>
+
+<p id="ShowMouseCoordinates">
+<p id="ShowMouseClickCoordinates">
+<p id="ShowGameBoardValues">
+<p id="ShowWinner">
+
+<script>
+	var canvas = document.getElementById("TicTacToeGame");
+	var ctx = canvas.getContext("2d");
+	ctx.lineWidth = 10;
+	var xWinStr = "X wins";
+	var oWinStr = "O wins";
+	
+	
+	var xMoveSound;
+	xMoveSound = new sound("wav/PSIlearn.wav");
+	
+	var oMoveSound;
+	oMoveSound = new sound("wav/itemget2.wav");
+	
+	var backgroundSong;
+	backgroundSong = new sound("wav/Eddie Brickel - What I Am.mp3");
+	
+	var winSound;
+	winSound = new sound("wav/Explosion.wav");
+	
+	var gameArray = new Array(0,0,0,0,0,0,0,0,0);
+	var gamePositionRow = 1;     // Rows 1,2,3
+	var gamePositionColumn = 1;  // Columns 1,2,3
+	var boardPosition = 1;       // positions 1-9
+	var player = 1;              // player 1-2
+	
+	drawGameBoard();
+	
+	backgroundSong.play();
+	 	
+   	document.getElementById("TicTacToeGame").addEventListener("mousemove", function(event) {
+    findMouseMoveCoordinates(event);
+});
+
+    document.getElementById("TicTacToeGame").addEventListener("mousedown", function(event) {
+    findMouseClickCoordinates(event);
+});
+
+function gameInit() {
+	
+	gameArray = [0,0,0,0,0,0,0,0,0];
+	player = 1;
+	boardPosition = 1;
+	drawGameBoard();
+}
+
+function checkForWinner(gameArray) {
+	
+	var row1 = gameArray[0] * gameArray[1] * gameArray[2];
+	var row2 = gameArray[3] * gameArray[4] * gameArray[5];
+	var row3 = gameArray[6] * gameArray[7] * gameArray[8];
+	var col1 = gameArray[0] * gameArray[3] * gameArray[6];
+	var col2 = gameArray[1] * gameArray[4] * gameArray[7];
+	var col3 = gameArray[2] * gameArray[5] * gameArray[8];
+	var dia1 = gameArray[0] * gameArray[4] * gameArray[8];
+	var dia2 = gameArray[6] * gameArray[4] * gameArray[2];
+	
+	if ((row1===1) || (row2===1) || (row3===1) || (col1===1) || (col2===1) || (col3===1) || (dia1===1) || (dia2===1)) {
+		
+		backgroundSong.stop();
+		winSound.play();
+		document.getElementById("ShowWinner").innerHTML = xWinStr;
+		//gameInit();
+		
+	}
+	
+	if ((row1===8) || (row2===8) || (row3===8) || (col1===8) || (col2===8) || (col3===8) || (dia1===8) || (dia2===8)) {
+		
+		backgroundSong.stop();
+		winSound.play();
+		document.getElementById("ShowWinner").innerHTML = oWinStr;
+		//gameInit();
+		
+	}
+	
+	function drawLine(row, col, dia) {
+		
+		
+	}
+	
+	
+	
+	
+}
+
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+} 
+  	
+function findMouseMoveCoordinates(e) {  // Corrects changed position of Canvas
+    
+    var pos = getMousePos(canvas, e);
+    var x = pos.x;
+    var y = pos.y;
+    
+    var coor = "Coordinates: (" + x + "," + y + ")";
+    document.getElementById("ShowMouseCoordinates").innerHTML = coor;
+}
+
+function findMouseClickCoordinates(e) {
+	
+    var pos = getMousePos(canvas, e);
+    var x = pos.x;
+    var y = pos.y;
+    
+    var coor = "Coordinates: (" + x + "," + y + ")";
+    if (((x>=20)&&(y>=20)) && ((x<=130)&&(y<=130))) {
+    	
+    	gamePositionRow=1;
+    	gamePositionColumn=1;
+    	boardPosition=1;
+    	
+    	if (gameArray[0] == 0) {
+    		
+    		gameArray[0] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+    else if (((x>=150)&&(y>=20)) && ((x<=250)&&(y<=130))) {
+    	
+    	gamePositionRow=1;
+    	gamePositionColumn=2;
+    	boardPosition=2;
+    	
+    	if (gameArray[1] == 0) {
+
+    		gameArray[1] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+    else if (((x>=270)&&(y>=20)) && ((x<=380)&&(y<=130))) {
+    	
+    	gamePositionRow=1;
+    	gamePositionColumn=3;
+    	boardPosition=3;
+    	
+    	if (gameArray[2] == 0) {
+    		
+    		gameArray[2] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+    else if (((x>=20)&&(y>=150)) && ((x<=130)&&(y<=250))) {
+    	
+    	gamePositionRow=2;
+    	gamePositionColumn=1;
+    	boardPosition=4;
+    	
+    	if (gameArray[3] == 0) {
+    		
+    		gameArray[3] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+    else if (((x>=150)&&(y>=150)) && ((x<=250)&&(y<=250))) {
+    	
+    	gamePositionRow=2;
+    	gamePositionColumn=2;
+    	boardPosition=5;
+    	
+    	if (gameArray[4] == 0) {
+    		
+    		gameArray[4] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+    else if (((x>=270)&&(y>=150)) && ((x<=380)&&(y<=250))) {
+    	
+    	gamePositionRow=2;
+    	gamePositionColumn=3;
+    	boardPosition=6;
+    	
+    	if (gameArray[5] == 0) {
+    		
+    		gameArray[5] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+    else if (((x>=20)&&(y>=270)) && ((x<=130)&&(y<=380))) {
+    	
+    	gamePositionRow=3;
+    	gamePositionColumn=1;
+    	boardPosition=7;
+    	   	
+    	if (gameArray[6] == 0) {
+    		
+    		gameArray[6] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+    else if (((x>=150)&&(y>=270)) && ((x<=250)&&(y<=380))) {
+    	
+    	gamePositionRow=3;
+    	gamePositionColumn=2;
+    	boardPosition=8;
+    	
+    	if (gameArray[7] == 0) {
+    		
+    		gameArray[7] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+    else if (((x>=270)&&(y>=270)) && ((x<=380)&&(y<=380))) {
+    	
+    	gamePositionRow=3;
+    	gamePositionColumn=3;
+    	boardPosition=9;
+    	  	
+	    if (gameArray[8] == 0) {
+	    	
+	    	gameArray[8] = player;
+	    	if (player==2)
+	    	drawCircles(boardPosition);
+	    	else
+	    	drawX(boardPosition);
+	    	
+    	}
+    	
+    }
+   
+    document.getElementById("ShowMouseClickCoordinates").innerHTML = coor;
+    document.getElementById("ShowGameBoardValues").innerHTML = gameArray;
+    
+}
+
+function drawGameBoard() {	
+	
+     ctx.fillStyle = "white";	// clears gameboard
+	 ctx.fillRect(0,0,380,380);
+	
+	// Create gradient
+     var grd = ctx.createLinearGradient(10,120,10,150);
+     grd.addColorStop(0,"black");
+     grd.addColorStop(0.4,"orange");
+     grd.addColorStop(1,"black");
+
+     // Fill with gradient
+     ctx.fillStyle = grd;
+     ctx.fillRect(10,120,360,20);
+     
+     grd = ctx.createLinearGradient(10,240,10,270);  // 1st vertical line
+     grd.addColorStop(0,"black");
+     grd.addColorStop(0.4,"orange");
+     grd.addColorStop(1,"black");
+     ctx.fillStyle = grd;
+     ctx.fillRect(10,240,360,20);
+     
+     grd = ctx.createLinearGradient(120,10,150,10);  //  2nd vertical line
+     grd.addColorStop(0,"black");
+     grd.addColorStop(0.4,"orange");
+     grd.addColorStop(1,"black");
+     ctx.fillStyle = grd;
+     ctx.fillRect(120,10,20,360);
+     
+     grd = ctx.createLinearGradient(240,10,270,10);  // 1st horizontal line
+     grd.addColorStop(0,"black");
+     grd.addColorStop(0.4,"orange");
+     grd.addColorStop(1,"black");
+     ctx.fillStyle = grd;
+     ctx.fillRect(240,10,20,360);
+	
+}
+
+
+function drawCircles(position) {   // Draw Circles
+	
+oMoveSound.play();
+	
+switch(position) {
+    case 1:
+        ctx.beginPath();
+        ctx.arc(70,70,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+    case 2:
+        ctx.beginPath();
+        ctx.arc(190,70,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+    case 3:
+        ctx.beginPath();
+        ctx.arc(310,70,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+    case 4:
+        ctx.beginPath();
+        ctx.arc(70,190,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+    case 5:
+        ctx.beginPath();
+        ctx.arc(190,190,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+    case 6:
+        ctx.beginPath();
+        ctx.arc(310,190,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+    case 7:
+        ctx.beginPath();
+        ctx.arc(70,310,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+    case 8:
+        ctx.beginPath();
+        ctx.arc(190,310,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+    case 9:
+        ctx.beginPath();
+        ctx.arc(310,310,45,0,2*Math.PI);
+        ctx.stroke();
+        break;
+       }
+       checkForWinner(gameArray);
+       player = 1;  // switch to player 1
+       gameMoveSound.play();
+}
+
+
+function drawX(position) {     // Draw Xs
+	
+xMoveSound.play();	
+	
+switch(position) {
+	case 1:	
+        ctx.moveTo(20,20);
+        ctx.lineTo(110,110);
+        ctx.moveTo(20,110);
+        ctx.lineTo(110,20);
+        ctx.stroke();
+        break;
+    case 2:
+        ctx.moveTo(150,20);
+        ctx.lineTo(230,110);
+        ctx.moveTo(150,110);
+        ctx.lineTo(230,20);
+        ctx.stroke();
+        break;
+    case 3:
+        ctx.moveTo(270,20);
+        ctx.lineTo(350,110);
+        ctx.moveTo(270,110);
+        ctx.lineTo(350,20);
+        ctx.stroke();
+        break;
+    case 4:
+        ctx.moveTo(20,150);
+        ctx.lineTo(110,230);
+        ctx.moveTo(20,230);
+        ctx.lineTo(110,150);
+        ctx.stroke();
+        break;
+    case 5:
+        ctx.moveTo(150,150);
+        ctx.lineTo(230,230);
+        ctx.moveTo(150,230);
+        ctx.lineTo(230,150);
+        ctx.stroke();
+        break;
+    case 6:
+        ctx.moveTo(270,150);
+        ctx.lineTo(350,230);
+        ctx.moveTo(270,230);
+        ctx.lineTo(350,150);
+        ctx.stroke();
+        break;
+    case 7:
+        ctx.moveTo(20,270);
+        ctx.lineTo(110,350);
+        ctx.moveTo(20,350);
+        ctx.lineTo(110,270);
+        ctx.stroke();
+        break;
+    case 8:
+        ctx.moveTo(150,270);
+        ctx.lineTo(230,350);
+        ctx.moveTo(150,350);
+        ctx.lineTo(230,270);
+        ctx.stroke();
+        break;
+    case 9:
+        ctx.moveTo(270,270);
+        ctx.lineTo(350,350);
+        ctx.moveTo(270,350);
+        ctx.lineTo(350,270);
+        ctx.stroke();
+        break;
+       }
+       
+       checkForWinner(gameArray);
+       player = 2;  // switch to player 2
+       
+}
+
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    };
+    this.stop = function(){
+        this.sound.pause();
+    };    
+}
+
+</script>
+
+
+</body>
+</html>
